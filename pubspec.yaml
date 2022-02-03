@@ -1,0 +1,112 @@
+name: doc_manager
+description: A doctor profile management application.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  provider: ^6.0.2
+  intl: ^0.17.0
+  remixicon: ^1.0.0
+  pinput: ^1.2.2
+  dio: ^4.0.4
+  dio_http_cache: ^0.3.0
+  flutter_inner_drawer: ^0.5.8
+  cached_network_image: ^3.2.0
+  sqflite: ^2.0.1
+  image_picker:
+  firebase_core: ^1.10.6
+  firebase_auth: ^3.3.4
+  dartz: ^0.10.1
+  equatable: ^2.0.3
+  connectivity_plus: ^2.2.0
+  bloc: ^7.0.0
+  flutter_bloc: ^7.0.0
+  get_it: ^7.2.0
+  hive: ^2.0.5
+  hive_flutter: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  test:
+  flutter_lints: ^1.0.4
+flutter:
+
+  uses-material-design: true
+  assets:
+    - assets/i18n/
+
+  fonts:
+    # Josefin Sans
+    - family: Josefin Sans
+      fonts:
+        - asset: assets/fonts/josefin/JosefinSans_w300.ttf
+          weight: 300
+        - asset: assets/fonts/josefin/JosefinSans_w300i.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/josefin/JosefinSans_w400.ttf
+        - asset: assets/fonts/josefin/JosefinSans_w400i.ttf
+          style: italic
+        - asset: assets/fonts/josefin/JosefinSans_w700.ttf
+          weight: 700
+        - asset: assets/fonts/josefin/JosefinSans_w700i.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/josefin/JosefinSans_w900.ttf
+          weight: 900
+        - asset: assets/fonts/josefin/JosefinSans_w900i.ttf
+          weight: 900
+          style: italic
+
+    # Montserrat
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat_w300.ttf
+          weight: 300
+        - asset: assets/fonts/montserrat/Montserrat_w300i.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat_w400.ttf
+        - asset: assets/fonts/montserrat/Montserrat_w400i.ttf
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat_w700.ttf
+          weight: 700
+        - asset: assets/fonts/montserrat/Montserrat_w700i.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat_w900.ttf
+          weight: 900
+        - asset: assets/fonts/montserrat/Montserrat_w900i.ttf
+          weight: 900
+          style: italic
+
+    # Poppins
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/poppins/Poppins_w300.ttf
+          weight: 300
+        - asset: assets/fonts/poppins/Poppins_w300i.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/poppins/Poppins_w400.ttf
+        - asset: assets/fonts/poppins/Poppins_w400i.ttf
+          style: italic
+        - asset: assets/fonts/poppins/Poppins_w700.ttf
+          weight: 700
+        - asset: assets/fonts/poppins/Poppins_w700i.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/poppins/Poppins_w900.ttf
+          weight: 900
+        - asset: assets/fonts/poppins/Poppins_w900i.ttf
+          weight: 900
+          style: italic
