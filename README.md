@@ -22,7 +22,7 @@ flutter channel
 
 If you are using any other channel apart from dev, switch your channel to dev using the below command -
 ```bash
-flutter channel dev
+flutter channel stable
 ```
 
 Upgrade Flutter to download the latest source code from dev channel -
@@ -37,10 +37,6 @@ Download the project using git.
 Resolve package dependencies of various modules -
 
 ```bash
- cd library_package
- flutter packages get
-
- cd ..
 
  cd doc_manager-main 2
  flutter packages get
@@ -58,12 +54,8 @@ The build_runner package includes the following commands:
 - test -> Runs tests.
 - watch -> Launches a build server that watches for edits to input files. Responds to changes by performing incremental rebuilds.
 
-You can use any ONE of the below command to run the build runner -
 
-```bash
-flutter packages pub run build_runner watch --delete-conflicting-outputs
-flutter packages pub run build_runner build  --delete-conflicting-outputs
-```
+
 
 
 
@@ -72,7 +64,7 @@ flutter packages pub run build_runner build  --delete-conflicting-outputs
 Make sure that config folder with related files are available in below mentioned path so that ConfigReader is able to resolve config related dependencies -
 
 ```bash
-doc_manager-main 2/library_package/config
+doc_manager-main 2/lib/config
 ```
 
 ## Project Architecture
@@ -81,10 +73,9 @@ The project consists of a major library_package module and multiple country app 
 
 library_package inturn is structured using clean architecture. It has 2 main directories -
 - **core** - Contains files that forms core part of the project and is common between multiple screens
-- **features** - Contains files for each and every screen and its related dependency files structured around clean architecture principles
 
 Each features directory is further broken down into 3 sub directories -
-* **presentation** - Presentation layer doesn't do much by itself. It delegates all its work to use cases. At most, the presentation layer handles basic input conversion and validation.
+* **presentation** - Presentation layer doesn't do much by itself,uses UI .
 * **domain** - Domain layer contains only the core business logic (use cases) and business objects (entities). It should be totally independent of every other layer.
 * **data** - The data layer consists of a Repository implementation (the contract comes from the domain layer) and data sources - one is usually for getting remote (API) data and the other for caching that data. Repository is where you decide if you return fresh or cached data, when to cache it and so on. You may notice that data sources don't return Entities but rather Models. The reason behind this is that transforming raw data (e.g JSON) into Dart objects requires some JSON conversion code. We don't want this JSON-specific code inside the domain Entities - what if we decide to switch to XML?
 
