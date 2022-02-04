@@ -37,10 +37,7 @@ Download the project using git.
 Resolve package dependencies of various modules -
 
 ```bash
- cd library_package
- flutter packages get
-
- cd ..
+ 
 
  cd doc_manager-main 2
  flutter packages get
@@ -58,12 +55,8 @@ The build_runner package includes the following commands:
 - test -> Runs tests.
 - watch -> Launches a build server that watches for edits to input files. Responds to changes by performing incremental rebuilds.
 
-You can use any ONE of the below command to run the build runner -
 
-```bash
-flutter packages pub run build_runner watch --delete-conflicting-outputs
-flutter packages pub run build_runner build  --delete-conflicting-outputs
-```
+
 
 
 
@@ -72,7 +65,7 @@ flutter packages pub run build_runner build  --delete-conflicting-outputs
 Make sure that config folder with related files are available in below mentioned path so that ConfigReader is able to resolve config related dependencies -
 
 ```bash
-doc_manager-main 2/library_package/config
+doc_manager-main 2/lib/config
 ```
 
 ## Project Architecture
