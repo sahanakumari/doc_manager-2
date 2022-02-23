@@ -7,10 +7,10 @@ abstract class DoctorsEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class DoctorsEventImpl extends DoctorsEvent {
+class GetDoctorsListEvent extends DoctorsEvent {
   final Map<String, dynamic> params;
 
-  const DoctorsEventImpl(this.params);
+  const GetDoctorsListEvent(this.params);
 
   @override
   List<Object> get props => [params];

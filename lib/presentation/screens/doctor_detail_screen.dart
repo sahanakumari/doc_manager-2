@@ -1,19 +1,19 @@
-import 'package:doc_manager/core/utils/app_styles.dart';
-import 'package:doc_manager/core/utils/extensions.dart';
-import 'package:doc_manager/core/utils/network_n_storage/db_helper.dart';
-import 'package:doc_manager/core/utils/utils.dart';
-import 'package:doc_manager/data/models/models.dart';
-import 'package:doc_manager/presentation/bloc/Profile/profile_bloc.dart';
-import 'package:doc_manager/presentation/widgets/s_buttons.dart';
-import 'package:doc_manager/presentation/widgets/s_card.dart';
-import 'package:doc_manager/presentation/widgets/s_inputs.dart';
-import 'package:doc_manager/presentation/widgets/section_title.dart';
-import 'package:doc_manager/presentation/widgets/widgets.dart';
+
+
+import 'package:doc_manager/core/services/db_helper.dart';
+import 'package:doc_manager/core/services/extensions.dart';
+import 'package:doc_manager/core/services/utils.dart';
+import 'package:doc_manager/data/app_data/app_styles.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/presentation/bloc/profile/profile_bloc.dart';
+import 'package:doc_manager/presentation/widgets/components.dart';
+import 'package:doc_manager/presentation/widgets/forms.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:remixicon/remixicon.dart';
-
+final dii = GetIt.instance;
 class DoctorDetailsScreen extends StatefulWidget {
   final Doctor doctor;
   final String? tag;
@@ -89,31 +89,34 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
         Navigator.pop(context, _updated);
         return Future.value(false);
       },
-      child: BlocListener(
-        bloc: BlocProvider.of<ProfileBloc>(context),
-        listener: (context, state) {
-          if (state is DataLoaded) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Data has been updated."),
-              ),
-            );
-            Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
-          }
-        },
-        child: Scaffold(
-          body: NestedScrollView(
-            controller: _scrollController,
-            body: _buildBody(context, _linearFactor),
-            headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-              return [_buildAppBar(context, _avatarSize)];
-            },
+      child: BlocProvider<ProfileBloc >(
+        create: (context) => dii<ProfileBloc>(),
+        child: BlocListener(
+          bloc: BlocProvider.of<ProfileBloc>(context),
+          listener: (context, state) {
+            if (state is DataLoaded) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Data has been updated."),
+                ),
+              );
+              Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+            }
+          },
+          child: Scaffold(
+            body: NestedScrollView(
+              controller: _scrollController,
+              body: _buildBody(context, _linearFactor),
+              headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+                return [_buildAppBar(context, _avatarSize)];
+              },
+            ),
+            bottomNavigationBar: _isEditMode
+                ? _buildBottomButtons(
+                    context,
+                  )
+                : null,
           ),
-          bottomNavigationBar: _isEditMode
-              ? _buildBottomButtons(
-                  context,
-                )
-              : null,
         ),
       ),
 
@@ -198,7 +201,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                   height: avatarSize,
                   child: Stack(
                     children: [
-                      SCard(child: _doctor.avatar),
+                      Card(child: _doctor.avatar),
                       Positioned(
                         bottom: 5,
                         right: 5,
@@ -257,7 +260,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 ),
               ),
             SectionTitle("personalDetails".tr(context)),
-            SFormInput(
+            FormInput(
               hint: "enterFirstName".tr(context),
               label: "firstName".tr(context),
               controller: _firstNameCtrl,
@@ -270,7 +273,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 return null;
               },
             ),
-            SFormInput(
+            FormInput(
               hint: "enterLastName".tr(context),
               label: "lastName".tr(context),
               enabled: _isEditMode,
@@ -312,14 +315,14 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 ),
               )
             else
-              SFormInput(
+              FormInput(
                 hint: "selectGender".tr(context),
                 label: "gender".tr(context),
                 enabled: _isEditMode,
                 suffixIcon: const Icon(Remix.men_line),
                 controller: _genderCtrl,
               ),
-            SFormInput(
+            FormInput(
               hint: "enterMobileNumber".tr(context),
               label: "mobileNumber".tr(context),
               controller: _mobileCtrl,
@@ -334,7 +337,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
             ),
             InkWell(
               onTap: _isEditMode ? _selectDate : null,
-              child: SFormInput(
+              child: FormInput(
                 hint: "enterDateOfBirth".tr(context),
                 label: "dateOfBirth".tr(context),
                 controller: _dobCtrl,
@@ -348,7 +351,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 FractionallySizedBox(
                   widthFactor: factor,
                   child: _isEditMode
-                      ? SFormSelect(
+                      ? FormSelect(
                           hint: "selectBloodGroup".tr(context),
                           label: "bloodGroup".tr(context),
                           enabled: _isEditMode,
@@ -364,7 +367,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                   DropdownMenuItem(value: e, child: Text(e)))
                               .toList(),
                         )
-                      : SFormInput(
+                      : FormInput(
                           hint: "selectBloodGroup".tr(context),
                           label: "bloodGroup".tr(context),
                           controller: _bloodGroupCtrl,
@@ -374,7 +377,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 ),
                 FractionallySizedBox(
                   widthFactor: factor,
-                  child: SFormInput(
+                  child: FormInput(
                     hint: "enterHeight".tr(context),
                     label: "height".tr(context),
                     controller: _heightCtrl,
@@ -394,7 +397,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                 ),
                 FractionallySizedBox(
                   widthFactor: factor,
-                  child: SFormInput(
+                  child: FormInput(
                     hint: "enterWeight".tr(context),
                     label: "weight".tr(context),
                     controller: _weightCtrl,

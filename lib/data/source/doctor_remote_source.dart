@@ -1,16 +1,19 @@
-import 'package:doc_manager/core/utils/logger.dart';
-import 'package:doc_manager/core/utils/network_n_storage/network.dart';
-import 'package:doc_manager/core/utils/network_n_storage/networking.dart';
-import 'package:doc_manager/data/models/models.dart';
+import 'package:doc_manager/core/services/logger.dart';
+import 'package:doc_manager/core/services/networking.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/data/models/networking.dart';
 
 abstract class DoctorRemoteSource {
+
   Future<List<Doctor>> getDoctors(Map<String, dynamic> params);
 }
 
 class DoctorRemoteSourceImpl extends DoctorRemoteSource {
+  final Networking networking;
+  DoctorRemoteSourceImpl({ required this.networking});
   @override
   Future<List<Doctor>> getDoctors(Map<String, dynamic> params) {
-    return Networking.get(
+    return networking.get(
       "/contacts",
       enableCaching: true,
       queryParams: {for (var e in params.keys) e: "${params[e]}"},

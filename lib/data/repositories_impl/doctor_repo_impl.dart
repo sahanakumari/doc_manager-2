@@ -1,22 +1,23 @@
+
 import 'package:dartz/dartz.dart';
-import 'package:doc_manager/core/utils/network_n_storage/db_helper.dart';
-import 'package:doc_manager/core/utils/network_n_storage/network_connectivity.dart';
-import 'package:doc_manager/core/utils/network_n_storage/networking.dart';
-import 'package:doc_manager/data/models/models.dart';
+import 'package:doc_manager/core/services/db_helper.dart';
+import 'package:doc_manager/core/services/network_connectivity.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/data/models/networking.dart';
 import 'package:doc_manager/data/source/doctor_remote_source.dart';
 import 'package:doc_manager/data/source/errors/failure.dart';
 import 'package:doc_manager/domain/repositories/doctor_repo.dart';
-
-
-
+import 'package:flutter/cupertino.dart';
 
 class DoctorRepoImpl extends DoctorRepo {
   final DoctorRemoteSource remoteSource;
   final NetworkConnectivity connectivity;
+  final DbHelper dbHelper;
 
   DoctorRepoImpl({
     required this.remoteSource,
     required this.connectivity,
+    required this.dbHelper,
   });
 
   @override
@@ -25,29 +26,25 @@ class DoctorRepoImpl extends DoctorRepo {
     if (await connectivity.isConnected) {
       try {
         final List<Doctor> data = await remoteSource.getDoctors(params);
-        var copy = [];
-        copy.addAll(data);
-        DbHelper().getDoctors().then((value) {
-          data.clear();
-          for (var e in copy) {
-            var doc = e;
-            for (var element in value) {
-              if (e == element) {
-                doc = element;
-              }
-            }
-            data.add(doc);
+        dbHelper.getDoctors().then((value) {
+          for (var element1 in value) {
+           int index = data.indexWhere((element) => element.id == element1.id);
+           if(index != -1)
+             {
+              data.removeAt(index);
+              data.insert(index, element1);
+             }
           }
         });
-
         return Right(data);
       } on ErrorResponse catch (e) {
         return Left(APIServiceFailure(e.errorMessage));
-      } catch (e) {
+      } catch (_) {
         return Left(ServerFailure());
       }
     } else {
-      return Left(CacheFailure());
+      debugPrint("internet check");
+      return Left(NetworkFailure());
     }
   }
 }

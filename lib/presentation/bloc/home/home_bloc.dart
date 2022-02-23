@@ -1,9 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:doc_manager/core/utils/constants.dart';
-import 'package:doc_manager/data/models/models.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/data/source/constants.dart';
 import 'package:doc_manager/data/source/errors/failure.dart';
-import 'package:doc_manager/domain/use_case/impl/doctors_use_case.dart';
-
+import 'package:doc_manager/domain/use_case/doctors_use_case.dart';
 import 'package:equatable/equatable.dart';
 part 'home_event.dart';
 part 'home_state.dart';
@@ -15,7 +14,7 @@ class HomeBloc extends Bloc<DoctorsEvent, DoctorsState> {
 
   @override
   Stream<DoctorsState> mapEventToState(DoctorsEvent event) async* {
-    if (event is DoctorsEventImpl) {
+    if (event is GetDoctorsListEvent) {
       yield* _mapToState(event);
     }
     else if(event is DoctorsChangeOrientation){
@@ -23,9 +22,7 @@ class HomeBloc extends Bloc<DoctorsEvent, DoctorsState> {
     }
   }
 
-
-
-  Stream<DoctorsState> _mapToState(DoctorsEventImpl event) async* {
+  Stream<DoctorsState> _mapToState(GetDoctorsListEvent event) async* {
     yield const DoctorsLoading();
     final failureOrAuthStatus = await doctorsUseCase(event.params);
     yield failureOrAuthStatus.fold(

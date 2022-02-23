@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:doc_manager/core/utils/constants.dart';
+import 'package:doc_manager/data/source/constants.dart';
 import 'package:doc_manager/data/source/errors/failure.dart';
-import 'package:doc_manager/domain/use_case/impl/login_use_case.dart';
+import 'package:doc_manager/domain/use_case/login_use_case.dart';
 import 'package:meta/meta.dart';
 
 part 'login_event.dart';

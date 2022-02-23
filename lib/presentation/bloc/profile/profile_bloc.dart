@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:doc_manager/data/models/models.dart';
-import 'package:doc_manager/domain/use_case/impl/profile_use_case.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/domain/use_case/profile_use_case.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+
+
 
 part 'profile_event.dart';
 part 'profile_state.dart';
@@ -10,7 +13,7 @@ part 'profile_state.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final ProfileUseCase profileUseCase;
-  ProfileBloc(this.profileUseCase) : super(ProfileInitial());
+  ProfileBloc(this.profileUseCase,) : super(ProfileInitial());
 
   @override
   Stream<ProfileState> mapEventToState(ProfileEvent event) async* {

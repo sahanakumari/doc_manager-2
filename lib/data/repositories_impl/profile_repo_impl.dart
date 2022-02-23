@@ -1,19 +1,20 @@
 import 'package:dartz/dartz.dart';
-import 'package:doc_manager/core/utils/network_n_storage/network_connectivity.dart';
-import 'package:doc_manager/core/utils/network_n_storage/networking.dart';
-import 'package:doc_manager/data/models/models.dart';
+import 'package:doc_manager/core/services/network_connectivity.dart';
+import 'package:doc_manager/data/models/doctor.dart';
+import 'package:doc_manager/data/models/networking.dart';
 import 'package:doc_manager/data/source/errors/failure.dart';
 import 'package:doc_manager/data/source/profile_local_source.dart';
 import 'package:doc_manager/domain/repositories/profile_repo.dart';
+import 'package:flutter/cupertino.dart';
 
 
 
 class ProfileRepoImpl extends ProfileRepo {
-  final ProfileLocalSource remoteSource;
+  final ProfileLocalSource localSource;
   final NetworkConnectivity connectivity;
 
   ProfileRepoImpl({
-    required this.remoteSource,
+    required this.localSource,
     required this.connectivity,
   });
 
@@ -22,7 +23,7 @@ class ProfileRepoImpl extends ProfileRepo {
     // TODO: implement saveDoctorData
     if (await connectivity.isConnected) {
       try {
-        final bool data = await remoteSource.saveDoctorData(doctor);
+        final bool data = await localSource.saveDoctorData(doctor);
         return Right(data);
       } on ErrorResponse catch (e) {
         return Left(APIServiceFailure(e.errorMessage));
@@ -30,7 +31,8 @@ class ProfileRepoImpl extends ProfileRepo {
         return Left(ServerFailure());
       }
     } else {
-      return Left(CacheFailure());
+      debugPrint("internet check");
+      return Left(NetworkFailure());
     }
   }
 }

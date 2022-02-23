@@ -1,5 +1,7 @@
-import 'package:doc_manager/core/utils/constants.dart';
+
 import 'package:equatable/equatable.dart';
+
+import '../constants.dart';
 
 abstract class Failure extends Equatable {
   @override

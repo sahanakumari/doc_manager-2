@@ -1,5 +1,5 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:doc_manager/core/utils/network_n_storage/network_connectivity.dart';
+import 'package:doc_manager/core/services/network_connectivity.dart';
 import 'package:doc_manager/data/repositories_impl/doctor_repo_impl.dart';
 import 'package:doc_manager/data/repositories_impl/login_repo_impl.dart';
 import 'package:doc_manager/data/repositories_impl/profile_repo_impl.dart';
@@ -9,13 +9,12 @@ import 'package:doc_manager/data/source/profile_local_source.dart';
 import 'package:doc_manager/domain/repositories/doctor_repo.dart';
 import 'package:doc_manager/domain/repositories/login_repo.dart';
 import 'package:doc_manager/domain/repositories/profile_repo.dart';
-import 'package:doc_manager/domain/use_case/impl/doctors_use_case.dart';
-import 'package:doc_manager/domain/use_case/impl/login_use_case.dart';
-import 'package:doc_manager/domain/use_case/impl/profile_use_case.dart';
+import 'package:doc_manager/domain/use_case/doctors_use_case.dart';
+import 'package:doc_manager/domain/use_case/login_use_case.dart';
+import 'package:doc_manager/domain/use_case/profile_use_case.dart';
 import 'package:doc_manager/presentation/bloc/Home/home_bloc.dart';
 import 'package:doc_manager/presentation/bloc/Login/login_bloc.dart';
 import 'package:doc_manager/presentation/bloc/Profile/profile_bloc.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
 
@@ -39,13 +38,13 @@ Future<void> init() async {
   di.registerLazySingleton(() => ProfileUseCase(di()));
 
   di.registerLazySingleton<DoctorRepo>(
-    () => DoctorRepoImpl(remoteSource: di(), connectivity: di()),
+    () => DoctorRepoImpl(remoteSource: di(), connectivity: di(), dbHelper: di()),
   );
   di.registerLazySingleton<ProfileRepo>(
-        () => ProfileRepoImpl(remoteSource: di(), connectivity: di()),
+        () => ProfileRepoImpl(localSource: di(), connectivity: di()),
   );
   di.registerLazySingleton<DoctorRemoteSource>(
-    () => DoctorRemoteSourceImpl(),
+    () => DoctorRemoteSourceImpl(networking: di()),
   );
   di.registerLazySingleton(() => FirebaseAuth.instance);
   di.registerLazySingleton(() => LoginUseCase(di()));
